@@ -1,0 +1,226 @@
+# ===================================================================
+# Micro-Commerce Application .gitignore
+# Covers both Flutter client and Node.js server
+# ===================================================================
+
+# ===== ENVIRONMENT & SECRETS =====
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.staging
+*.env
+
+# ===== NODE.JS / EXPRESS SERVER =====
+# Dependencies
+micro_server/node_modules/
+micro_server/npm-debug.log*
+micro_server/yarn-debug.log*
+micro_server/yarn-error.log*
+micro_server/lerna-debug.log*
+
+# Runtime data
+micro_server/pids
+micro_server/*.pid
+micro_server/*.seed
+micro_server/*.pid.lock
+
+# Coverage directory used by tools like istanbul
+micro_server/coverage/
+micro_server/.nyc_output
+
+# Build directories
+micro_server/dist/
+micro_server/build/
+
+# Logs
+micro_server/logs
+micro_server/*.log
+
+# Dependency directories
+micro_server/jspm_packages/
+
+# Optional npm cache directory
+micro_server/.npm
+
+# Optional eslint cache
+micro_server/.eslintcache
+
+# TypeScript build info
+micro_server/*.tsbuildinfo
+
+# ===== FLUTTER CLIENT =====
+# Build outputs
+micro_client/build/
+micro_client/.dart_tool/
+micro_client/.packages
+micro_client/.pub/
+
+# Generated files
+micro_client/**/*.g.dart
+micro_client/**/*.freezed.dart
+micro_client/**/*.config.dart
+
+# Flutter/Dart specific
+micro_client/.flutter-plugins
+micro_client/.flutter-plugins-dependencies
+micro_client/.metadata
+micro_client/pubspec.lock
+
+# Android specific
+micro_client/android/app/debug
+micro_client/android/app/profile
+micro_client/android/app/release
+micro_client/android/.gradle/
+micro_client/android/captures/
+micro_client/android/gradlew
+micro_client/android/gradlew.bat
+micro_client/android/local.properties
+micro_client/android/app/outputs/
+
+# iOS specific
+micro_client/ios/Runner.xcworkspace/xcuserdata/
+micro_client/ios/Runner.xcodeproj/xcuserdata/
+micro_client/ios/Runner.xcodeproj/project.xcworkspace/xcuserdata/
+micro_client/ios/Flutter/flutter_assets/
+micro_client/ios/ServiceDefinitions.json
+micro_client/ios/Runner/GeneratedPluginRegistrant.*
+micro_client/ios/.symlinks/
+micro_client/ios/Pods/
+
+# Web specific
+micro_client/web/assets/packages/
+micro_client/web/assets/AssetManifest.json
+micro_client/web/assets/FontManifest.json
+
+# ===== DEVELOPMENT TOOLS =====
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ===== DATABASE & CACHE =====
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Prisma
+micro_server/prisma/migrations/migration_lock.toml
+
+# ===== TEMPORARY & BACKUP FILES =====
+# Temporary directories
+tmp/
+temp/
+.tmp/
+
+# Backup files
+*.bak
+*.backup
+*.orig
+
+# ===== DOCKER =====
+# Docker files (if using containers)
+.dockerignore
+docker-compose.override.yml
+
+# ===== TESTING =====
+# Test results
+micro_server/test-results/
+micro_server/coverage/
+micro_client/test/coverage/
+
+# ===== DEPLOYMENT & CI/CD =====
+# Deployment scripts (if sensitive)
+deploy.sh
+.deployment
+
+# CI/CD files (customize as needed)
+.github/workflows/*.yml
+.gitlab-ci.yml
+
+# ===== MOBILE SPECIFIC =====
+# Flutter
+micro_client/ios/Flutter/flutter_export_environment.sh
+micro_client/ios/Runner.xcworkspace/
+micro_client/android/app/src/main/res/values/secrets.xml
+
+# React Native (if applicable in future)
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# ===== PACKAGE MANAGERS =====
+# npm
+package-lock.json
+yarn.lock
+
+# Flutter
+micro_client/pubspec.lock
+
+# ===== DOCUMENTATION =====
+# Auto-generated docs
+docs/api/
+documentation/generated/
+
+# ===== MISC =====
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# Runtime directories
+pids/
+logs/
+results/
+
+# ===== SENSITIVE CONFIGURATION =====
+# API keys and secrets
+config/secrets.json
+config/keys.json
+micro_server/config/secrets.json
+micro_client/lib/config/secrets.dart
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+
+# ===== LOCAL DEVELOPMENT =====
+# Local development overrides
+docker-compose.override.yml
+.env.override
+
+# Local database backups
+*.dump
+*.sql.gz
+
+# Temporary upload directories
+uploads/tmp/
+micro_server/uploads/tmp/
