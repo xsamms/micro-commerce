@@ -93,16 +93,54 @@ class AdminService {
     required String categoryId,
     String? imageUrl,
   }) async {
-    final response = await _apiService.post('/products', data: {
-      'name': name,
-      'description': description,
-      'price': price,
-      'stock': stock,
-      'categoryId': categoryId,
-      'imageUrl': imageUrl,
-    });
+    try {
+      print('AdminService: Creating product...');
+      final data = <String, dynamic>{
+        'name': name,
+        'price': price,
+        'stock': stock,
+        'categoryId': categoryId,
+      };
 
-    return Product.fromJson(response.data['data']);
+      // Only add optional fields if they have values
+      if (description != null && description.isNotEmpty) {
+        data['description'] = description;
+      }
+      if (imageUrl != null && imageUrl.isNotEmpty) {
+        data['imageUrl'] = imageUrl;
+      }
+
+      print('AdminService: Sending data: $data');
+      final response = await _apiService.post('/products', data: data);
+      print('AdminService: Create product response: ${response.statusCode}');
+      print('AdminService: Response data: ${response.data}');
+
+      if (response.data['success'] == true) {
+        final productData = response.data['data'];
+        print('AdminService: Product data: $productData');
+
+        // Handle potential type conversion issues
+        final processedProduct = Map<String, dynamic>.from(productData);
+
+        // Convert price from string to double if it's a string
+        if (processedProduct['price'] is String) {
+          processedProduct['price'] = double.parse(processedProduct['price']);
+        }
+
+        // Convert stock from string to int if it's a string
+        if (processedProduct['stock'] is String) {
+          processedProduct['stock'] = int.parse(processedProduct['stock']);
+        }
+
+        print('AdminService: Processed product data: $processedProduct');
+        return Product.fromJson(processedProduct);
+      } else {
+        throw Exception('API returned success: false');
+      }
+    } catch (e) {
+      print('AdminService: Error creating product: $e');
+      rethrow;
+    }
   }
 
   static Future<Product> updateProduct({
@@ -114,16 +152,51 @@ class AdminService {
     String? categoryId,
     String? imageUrl,
   }) async {
-    final data = <String, dynamic>{};
-    if (name != null) data['name'] = name;
-    if (description != null) data['description'] = description;
-    if (price != null) data['price'] = price;
-    if (stock != null) data['stock'] = stock;
-    if (categoryId != null) data['categoryId'] = categoryId;
-    if (imageUrl != null) data['imageUrl'] = imageUrl;
+    try {
+      print('AdminService: Updating product $id...');
+      final data = <String, dynamic>{};
 
-    final response = await _apiService.put('/products/$id', data: data);
-    return Product.fromJson(response.data['data']);
+      // Only add fields that have values
+      if (name != null && name.isNotEmpty) data['name'] = name;
+      if (description != null && description.isNotEmpty)
+        data['description'] = description;
+      if (price != null) data['price'] = price;
+      if (stock != null) data['stock'] = stock;
+      if (categoryId != null && categoryId.isNotEmpty)
+        data['categoryId'] = categoryId;
+      if (imageUrl != null && imageUrl.isNotEmpty) data['imageUrl'] = imageUrl;
+
+      print('AdminService: Sending update data: $data');
+      final response = await _apiService.put('/products/$id', data: data);
+      print('AdminService: Update product response: ${response.statusCode}');
+      print('AdminService: Response data: ${response.data}');
+
+      if (response.data['success'] == true) {
+        final productData = response.data['data'];
+        print('AdminService: Product data: $productData');
+
+        // Handle potential type conversion issues
+        final processedProduct = Map<String, dynamic>.from(productData);
+
+        // Convert price from string to double if it's a string
+        if (processedProduct['price'] is String) {
+          processedProduct['price'] = double.parse(processedProduct['price']);
+        }
+
+        // Convert stock from string to int if it's a string
+        if (processedProduct['stock'] is String) {
+          processedProduct['stock'] = int.parse(processedProduct['stock']);
+        }
+
+        print('AdminService: Processed product data: $processedProduct');
+        return Product.fromJson(processedProduct);
+      } else {
+        throw Exception('API returned success: false');
+      }
+    } catch (e) {
+      print('AdminService: Error updating product: $e');
+      rethrow;
+    }
   }
 
   static Future<void> deleteProduct(String id) async {
@@ -142,16 +215,17 @@ class AdminService {
         ),
       });
 
-      final response =
-          await _apiService.post('/upload/product-image', data: formData);
-      print('AdminService: Image upload response: ${response.statusCode}');
+      final response = await _apiService.post(
+        '/upload/product-image',
+        data: formData,
+      );
 
       if (response.data['success'] == true) {
         final imageUrl = response.data['data']['imageUrl'] as String;
-        print('AdminService: Image uploaded successfully: $imageUrl');
+        print('AdminService: Image uploaded successfully');
         return imageUrl;
       } else {
-        throw Exception('Image upload failed: API returned success: false');
+        throw Exception('Image upload failed: ${response.data}');
       }
     } catch (e) {
       print('AdminService: Error uploading image: $e');

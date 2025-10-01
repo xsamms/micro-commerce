@@ -49,7 +49,10 @@ class AppRouter {
       GoRoute(
         path: products,
         name: 'products',
-        builder: (context, state) => const ProductListScreen(),
+        builder: (context, state) {
+          final categoryId = state.uri.queryParameters['categoryId'];
+          return ProductListScreen(categoryId: categoryId);
+        },
       ),
       GoRoute(
         path: productDetail,

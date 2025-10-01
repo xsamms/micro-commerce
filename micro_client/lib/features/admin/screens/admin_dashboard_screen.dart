@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/user.dart';
 import '../../auth/providers/auth_provider.dart';
 import 'admin_category_management_screen.dart';
+import 'admin_order_management_screen.dart';
 import 'admin_product_management_screen.dart';
+import 'admin_user_management_screen.dart';
 
 class AdminDashboardScreen extends ConsumerWidget {
   const AdminDashboardScreen({super.key});
@@ -141,30 +143,30 @@ class AdminDashboardScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 12),
 
-            // Order Management Card (placeholder)
+            // Order Management Card
             _AdminCard(
               icon: Icons.shopping_bag,
               title: 'Order Management',
               subtitle: 'View and manage customer orders',
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Order management coming soon'),
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const AdminOrderManagementScreen(),
                   ),
                 );
               },
             ),
             const SizedBox(height: 12),
 
-            // User Management Card (placeholder)
+            // User Management Card
             _AdminCard(
               icon: Icons.people,
               title: 'User Management',
               subtitle: 'Manage user accounts and permissions',
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('User management coming soon'),
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const AdminUserManagementScreen(),
                   ),
                 );
               },

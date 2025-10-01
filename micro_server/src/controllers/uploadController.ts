@@ -14,17 +14,21 @@ export class UploadController {
         throw new AppError("No image file provided", 400);
       }
 
-      // Upload to Cloudinary
+      // Upload to Cloudinary with optimization
       const result = await new Promise((resolve, reject) => {
         cloudinary.uploader
           .upload_stream(
             {
               folder: "micro_ecom_products",
-              upload_preset: "micro_ecom_products",
               resource_type: "image",
+              transformation: [
+                { width: 1000, height: 1000, crop: "limit" },
+                { quality: "auto" },
+              ],
             },
             (error, result) => {
               if (error) {
+                console.log("Cloudinary upload error:", error);
                 reject(error);
               } else {
                 resolve(result);
@@ -47,6 +51,7 @@ export class UploadController {
 
       res.status(200).json(response);
     } catch (error) {
+      console.log("Upload error:", error);
       next(error);
     }
   }

@@ -12,9 +12,17 @@ class PaginatedProductResponse {
 
   factory PaginatedProductResponse.fromJson(Map<String, dynamic> json) {
     return PaginatedProductResponse(
-      data: (json['data'] as List)
-          .map((productJson) => Product.fromJson(productJson))
-          .toList(),
+      data: (json['data'] as List).map((productJson) {
+        // Convert string price to double before creating Product
+        final convertedJson = Map<String, dynamic>.from(productJson);
+        final price = convertedJson['price'];
+        if (price is String) {
+          convertedJson['price'] = double.tryParse(price) ?? 0.0;
+        } else if (price is num) {
+          convertedJson['price'] = price.toDouble();
+        }
+        return Product.fromJson(convertedJson);
+      }).toList(),
       pagination: ProductPagination.fromJson(json['pagination']),
     );
   }
@@ -66,13 +74,27 @@ class ProductsService {
 
     final response =
         await _apiService.get('/products', queryParameters: queryParams);
+
+    // The API returns: { success: true, data: { data: [...], pagination: {...} } }
+    // So we need to access response.data['data'] to get the actual data object
     return PaginatedProductResponse.fromJson(response.data['data']);
   }
 
   static Future<Product?> getProductById(String id) async {
     try {
       final response = await _apiService.get('/products/$id');
-      return Product.fromJson(response.data['data']);
+      final productJson = response.data['data'];
+
+      // Convert string price to double before creating Product
+      final convertedJson = Map<String, dynamic>.from(productJson);
+      final price = convertedJson['price'];
+      if (price is String) {
+        convertedJson['price'] = double.tryParse(price) ?? 0.0;
+      } else if (price is num) {
+        convertedJson['price'] = price.toDouble();
+      }
+
+      return Product.fromJson(convertedJson);
     } catch (e) {
       return null;
     }
