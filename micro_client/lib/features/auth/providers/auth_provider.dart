@@ -134,6 +134,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = const AuthState();
   }
 
+  // Update user in state (after profile update)
+  Future<void> updateUser(User updatedUser) async {
+    state = state.copyWith(user: updatedUser);
+  }
+
   // Clear error
   void clearError() {
     state = state.copyWith(error: null);

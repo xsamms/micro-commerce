@@ -33,13 +33,25 @@ class CartService {
 
       // Check if response.data is null or doesn't have the expected structure
       if (response.data == null) {
-        throw Exception('No cart data received');
+        throw Exception('No cart data received from server');
+      }
+
+      // Handle case where API returns empty response body
+      if (response.data is! Map<String, dynamic>) {
+        throw Exception('Invalid cart data format received');
       }
 
       // Check if the API response has the expected structure
-      final data = response.data['data'];
+      final responseMap = response.data as Map<String, dynamic>;
+      final data = responseMap['data'];
+
       if (data == null) {
         throw Exception('Cart data is null - user may not be logged in');
+      }
+
+      // Ensure data is a Map
+      if (data is! Map<String, dynamic>) {
+        throw Exception('Invalid cart data structure');
       }
 
       // Convert product prices from string to double before parsing
@@ -84,19 +96,16 @@ class CartService {
     }
   }
 
-  static Future<CartItem> updateCartItem(String itemId, int quantity) async {
+  static Future<void> updateCartItem(String itemId, int quantity) async {
     try {
       final response = await _apiService.put('/cart/$itemId', data: {
         'quantity': quantity,
       });
 
-      if (response.data == null || response.data['data'] == null) {
+      // Just check if the request was successful, don't parse the response
+      if (response.data == null || response.data['success'] != true) {
         throw Exception('Failed to update cart item');
       }
-
-      // Convert product price from string to double before parsing
-      final itemData = _convertCartItemPrice(response.data['data']);
-      return CartItem.fromJson(itemData);
     } catch (e) {
       if (e.toString().contains('401') ||
           e.toString().contains('Unauthorized')) {

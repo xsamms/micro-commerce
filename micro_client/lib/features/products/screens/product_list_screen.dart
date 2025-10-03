@@ -78,7 +78,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
           IconButton(
             icon: const Icon(Icons.shopping_cart),
             onPressed: () {
-              context.go('/cart');
+              context.push('/cart');
             },
           ),
         ],

@@ -90,7 +90,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
-                      // TODO: Edit profile
+                      context.push('/profile/edit');
                     },
                     child: const Text('Edit Profile'),
                   ),

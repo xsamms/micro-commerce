@@ -4,6 +4,7 @@ import '../../features/admin/screens/admin_dashboard_screen.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/auth/screens/register_screen.dart';
 import '../../features/cart/screens/cart_screen.dart';
+import '../../features/main/screens/edit_profile_screen.dart';
 import '../../features/main/screens/main_tab_screen.dart';
 import '../../features/orders/screens/order_detail_screen.dart';
 import '../../features/orders/screens/order_list_screen.dart';
@@ -21,6 +22,7 @@ class AppRouter {
   static const String cart = '/cart';
   static const String orders = '/orders';
   static const String orderDetail = '/orders/:id';
+  static const String editProfile = '/profile/edit';
   static const String admin = '/admin';
 
   static GoRouter router = GoRouter(
@@ -79,6 +81,11 @@ class AppRouter {
           final id = state.pathParameters['id']!;
           return OrderDetailScreen(orderId: id);
         },
+      ),
+      GoRoute(
+        path: editProfile,
+        name: 'edit-profile',
+        builder: (context, state) => const EditProfileScreen(),
       ),
       GoRoute(
         path: admin,

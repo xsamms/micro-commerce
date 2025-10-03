@@ -16,6 +16,11 @@ export interface LoginData {
   password: string;
 }
 
+export interface UpdateProfileData {
+  firstName?: string;
+  lastName?: string;
+}
+
 export class AuthService {
   static async register(
     userData: CreateUserData
@@ -77,5 +82,32 @@ export class AuthService {
     });
 
     return user;
+  }
+
+  static async updateProfile(
+    id: string,
+    updateData: UpdateProfileData
+  ): Promise<Omit<User, "password">> {
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+
+    return await prisma.user.update({
+      where: { id },
+      data: updateData,
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
   }
 }

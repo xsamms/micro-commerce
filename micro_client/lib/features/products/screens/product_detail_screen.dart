@@ -123,7 +123,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               IconButton(
                 icon: const Icon(Icons.shopping_cart),
                 onPressed: () {
-                  context.go('/cart');
+                  context.push('/cart');
                 },
               ),
             ],
@@ -384,6 +384,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           .read(cartNotifierProvider.notifier)
           .addToCart(widget.productId, _quantity);
 
+      // Small delay to ensure cart state is updated
+      await Future.delayed(const Duration(milliseconds: 100));
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -393,7 +396,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               label: 'View Cart',
               textColor: Colors.white,
               onPressed: () {
-                context.go('/cart');
+                context.push('/cart');
               },
             ),
           ),

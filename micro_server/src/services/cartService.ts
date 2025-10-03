@@ -85,6 +85,13 @@ export class CartService {
       return await prisma.cartItem.update({
         where: { id: existingItem.id },
         data: { quantity: newQuantity },
+        include: {
+          product: {
+            include: {
+              category: true,
+            },
+          },
+        },
       });
     }
 
@@ -93,6 +100,13 @@ export class CartService {
         cartId: cart.id,
         productId: data.productId,
         quantity: data.quantity,
+      },
+      include: {
+        product: {
+          include: {
+            category: true,
+          },
+        },
       },
     });
   }
@@ -123,6 +137,13 @@ export class CartService {
     return await prisma.cartItem.update({
       where: { id: itemId },
       data: { quantity },
+      include: {
+        product: {
+          include: {
+            category: true,
+          },
+        },
+      },
     });
   }
 

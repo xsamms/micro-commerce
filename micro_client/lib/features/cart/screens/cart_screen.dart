@@ -67,7 +67,7 @@ class CartScreen extends ConsumerWidget {
           const SizedBox(height: 32),
           ElevatedButton.icon(
             onPressed: () {
-              context.go('/products');
+              context.push('/products');
             },
             icon: const Icon(Icons.shopping_bag),
             label: const Text('Browse Products'),
@@ -110,20 +110,39 @@ class CartScreen extends ConsumerWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: item.product.imageUrl != null
-                    ? CachedNetworkImage(
-                        imageUrl: item.product.imageUrl!,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => Container(
-                          color: Colors.grey.shade200,
-                          child: const Center(
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          ),
-                        ),
-                        errorWidget: (context, url, error) => const Icon(
-                          Icons.image_not_supported,
-                          color: Colors.grey,
-                        ),
+                child: item.product.imageUrl != null &&
+                        !item.product.imageUrl!.contains('via.placeholder.com')
+                    ? Builder(
+                        builder: (context) {
+                          try {
+                            return CachedNetworkImage(
+                              imageUrl: item.product.imageUrl!,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Container(
+                                color: Colors.grey.shade200,
+                                child: const Center(
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) {
+                                print('Image loading error for $url: $error');
+                                return const Icon(
+                                  Icons.image_not_supported,
+                                  color: Colors.grey,
+                                  size: 32,
+                                );
+                              },
+                            );
+                          } catch (e) {
+                            print('CachedNetworkImage error: $e');
+                            return const Icon(
+                              Icons.image_not_supported,
+                              color: Colors.grey,
+                              size: 32,
+                            );
+                          }
+                        },
                       )
                     : const Icon(
                         Icons.image,
@@ -798,27 +817,32 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
           const SizedBox(height: 16),
 
           // Items
-          ...widget.cartItems.map((item) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '${item.product.name} × ${item.quantity}',
-                        style: const TextStyle(fontSize: 14),
-                      ),
+          ...widget.cartItems.asMap().entries.map((entry) {
+            final index = entry.key;
+            final item = entry.value;
+            return Padding(
+              key: ValueKey('review_item_${item.id}_$index'),
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      '${item.product.name} × ${item.quantity}',
+                      style: const TextStyle(fontSize: 14),
                     ),
-                    Text(
-                      '\$${(item.product.price * item.quantity).toStringAsFixed(2)}',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  ),
+                  Text(
+                    '\$${(item.product.price * item.quantity).toStringAsFixed(2)}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
-                ),
-              )),
+                  ),
+                ],
+              ),
+            );
+          }),
 
           const Divider(height: 32),
 
