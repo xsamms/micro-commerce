@@ -16,25 +16,29 @@ export class UploadController {
 
       // Upload to Cloudinary with optimization
       const result = await new Promise((resolve, reject) => {
+        const options: Record<string, any> = {
+          folder: "micro_ecom_products",
+          resource_type: "image",
+          transformation: [
+            { width: 1000, height: 1000, crop: "limit" },
+            { quality: "auto" },
+          ],
+        };
+
+        // If an upload preset is configured, include it
+        if (process.env["CLOUDINARY_UPLOAD_PRESET"]) {
+          options["upload_preset"] = process.env["CLOUDINARY_UPLOAD_PRESET"];
+        }
+
         cloudinary.uploader
-          .upload_stream(
-            {
-              folder: "micro_ecom_products",
-              resource_type: "image",
-              transformation: [
-                { width: 1000, height: 1000, crop: "limit" },
-                { quality: "auto" },
-              ],
-            },
-            (error, result) => {
-              if (error) {
-                console.log("Cloudinary upload error:", error);
-                reject(error);
-              } else {
-                resolve(result);
-              }
+          .upload_stream(options, (error, result) => {
+            if (error) {
+              console.log("Cloudinary upload error:", error);
+              reject(error);
+            } else {
+              resolve(result);
             }
-          )
+          })
           .end(req.file!.buffer);
       });
 

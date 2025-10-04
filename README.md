@@ -82,9 +82,8 @@ micro-commerce/
 │
 ├── micro_client/           # Flutter Frontend
 │   ├── lib/
-│   │   ├── core/           # Core functionality
-│   │   ├── features/       # Feature modules
-│   │   ├── shared/         # Shared components
+│   │   ├── core/           # Core functionality (constants, models, services, theme, utils)
+│   │   ├── features/       # Feature modules (auth, products, cart, orders, main, admin)
 │   │   └── main.dart
 │   ├── assets/             # App assets
 │   └── pubspec.yaml
@@ -303,6 +302,44 @@ For support and questions:
 2. Review the API documentation
 3. Check existing issues on GitHub
 4. Create a new issue if needed
+
+## ☁️ Cloudinary Setup (Image Uploads)
+
+The backend uses Cloudinary for product image uploads. To enable this:
+
+1. Create a Cloudinary account (or log in) at https://cloudinary.com/
+2. In the Cloudinary dashboard, locate your credentials and add them to `micro_server/.env`:
+
+   - `CLOUDINARY_CLOUD_NAME`
+   - `CLOUDINARY_API_KEY`
+   - `CLOUDINARY_API_SECRET`
+
+   Example (already present in `.env`):
+
+   ```env
+   CLOUDINARY_CLOUD_NAME=your_cloud_name
+   CLOUDINARY_API_KEY=your_api_key
+   CLOUDINARY_API_SECRET=your_api_secret
+   ```
+
+3. Folder/preset used by the app:
+
+   - Uploads target the folder: `micro_ecom_products`.
+   - The server uploads with transformations for optimal delivery: limit to 1000x1000 and `quality:auto`.
+   - Code reference: `micro_server/src/controllers/uploadController.ts` (upload_stream with `folder: "micro_ecom_products"`).
+
+4. Optional: Create an unsigned upload preset if you plan to upload directly from clients (not used by this server-side flow). Name suggestion: `micro_ecom_products` and set it to store in the `micro_ecom_products` folder with allowed formats (jpg, png, webp). For this repository, uploads are server-side using your API key/secret, so a preset is not required.
+
+5. Test the upload:
+
+   - Ensure the backend is running: `npm run dev` in `micro_server`.
+   - Use the admin UI or API route that handles product image uploads; successful responses include `secure_url` and `public_id`.
+
+Troubleshooting:
+
+- Verify environment variables are loaded (check logs on server start).
+- Ensure the Cloudinary account has access to create folders and upload images.
+- Network errors or invalid credentials will be logged as "Cloudinary upload error" in the server logs.
 
 ---
 
