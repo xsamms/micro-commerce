@@ -2,10 +2,9 @@
 const { v2: cloudinary } = require("cloudinary");
 
 cloudinary.config({
-  cloud_name: process.env["CLOUDINARY_CLOUD_NAME"] || "doovp5vha",
-  api_key: process.env["CLOUDINARY_API_KEY"] || "872468198667522",
-  api_secret:
-    process.env["CLOUDINARY_API_SECRET"] || "rF_JLJ8FSaT0iwwIO-W-oJ1aTtA",
+  cloud_name: process.env["CLOUDINARY_CLOUD_NAME"] || "",
+  api_key: process.env["CLOUDINARY_API_KEY"] || "",
+  api_secret: process.env["CLOUDINARY_API_SECRET"] || "",
 });
 
 async function testCloudinary() {
