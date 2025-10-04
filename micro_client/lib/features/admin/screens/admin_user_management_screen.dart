@@ -66,7 +66,7 @@ class _AdminUserManagementScreenState
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.1),
+            color: Colors.grey.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 4,
             offset: const Offset(0, 2),
@@ -137,7 +137,7 @@ class _AdminUserManagementScreenState
           _selectedRoleFilter = selected ? role : null;
         });
       },
-      selectedColor: AppTheme.primaryColor.withValues(alpha: 0.2),
+      selectedColor: AppTheme.primaryColor.withOpacity(0.2),
       checkmarkColor: AppTheme.primaryColor,
     );
   }
@@ -198,8 +198,8 @@ class _AdminUserManagementScreenState
                 CircleAvatar(
                   radius: 24,
                   backgroundColor: user.role == Role.admin
-                      ? AppTheme.primaryColor.withValues(alpha: 0.2)
-                      : AppTheme.secondaryColor.withValues(alpha: 0.2),
+                      ? AppTheme.primaryColor.withOpacity(0.2)
+                      : AppTheme.secondaryColor.withOpacity(0.2),
                   child: Icon(
                     user.role == Role.admin
                         ? Icons.admin_panel_settings

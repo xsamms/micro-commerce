@@ -13,9 +13,9 @@ export const comparePassword = async (
   return bcrypt.compare(password, hashedPassword);
 };
 
-export const generateToken = (payload: object): string => {
+export const generateToken = (payload: object, expiresIn?: string): string => {
   return jwt.sign(payload, config.jwt.secret, {
-    expiresIn: config.jwt.expiresIn as any,
+    expiresIn: expiresIn || (config.jwt.expiresIn as any),
   });
 };
 

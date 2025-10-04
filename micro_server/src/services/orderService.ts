@@ -63,7 +63,19 @@ export class OrderService {
       return newOrder;
     });
 
-    return order;
+    // Return order with items included
+    const fullOrder = await prisma.order.findUnique({
+      where: { id: order.id },
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    });
+
+    return fullOrder!;
   }
 
   static async getUserOrders(userId: string): Promise<Order[]> {
@@ -113,18 +125,30 @@ export class OrderService {
     orderId: string,
     status: OrderStatus
   ): Promise<Order> {
-    const order = await prisma.order.findUnique({
+    const existingOrder = await prisma.order.findUnique({
       where: { id: orderId },
     });
 
-    if (!order) {
+    if (!existingOrder) {
       throw new AppError("Order not found", 404);
     }
 
-    return await prisma.order.update({
-      where: { id: orderId },
-      data: { status },
-    });
+    // Validate status is a valid enum value
+    if (!Object.values(OrderStatus).includes(status as OrderStatus)) {
+      throw new AppError("Invalid order status", 400);
+    }
+
+    try {
+      return await prisma.order.update({
+        where: { id: orderId },
+        data: { status },
+      });
+    } catch (error: any) {
+      if (error.name === "PrismaClientValidationError") {
+        throw new AppError("Invalid order status", 400);
+      }
+      throw error;
+    }
   }
 
   static async getAllOrders(): Promise<Order[]> {

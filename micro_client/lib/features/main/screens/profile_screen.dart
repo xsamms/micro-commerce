@@ -149,7 +149,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 Icons.receipt_long_outlined,
                 'Order History',
                 () {
-                  // TODO: Navigate to order history
+                  context.push('/orders');
                 },
               ),
               _buildMenuItem(

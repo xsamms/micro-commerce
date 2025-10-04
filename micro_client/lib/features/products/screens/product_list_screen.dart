@@ -111,7 +111,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
                           ref
                               .read(productsFilterProvider.notifier)
                               .updateFilter(
-                                search: null,
+                                clearSearch: true,
                               );
                         },
                       )
@@ -121,9 +121,15 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
                 ),
               ),
               onSubmitted: (value) {
-                ref.read(productsFilterProvider.notifier).updateFilter(
-                      search: value.isNotEmpty ? value : null,
-                    );
+                if (value.isEmpty) {
+                  ref.read(productsFilterProvider.notifier).updateFilter(
+                        clearSearch: true,
+                      );
+                } else {
+                  ref.read(productsFilterProvider.notifier).updateFilter(
+                        search: value,
+                      );
+                }
               },
             ),
           ),
@@ -181,11 +187,11 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
                       onSelected: (selected) {
                         // Always set categoryId to null when "All" is tapped
                         ref.read(productsFilterProvider.notifier).updateFilter(
-                              categoryId: null,
+                              clearCategoryId: true,
                             );
                       },
                       selectedColor:
-                          Theme.of(context).primaryColor.withValues(alpha: 0.2),
+                          Theme.of(context).primaryColor.withOpacity(0.2),
                       checkmarkColor: Theme.of(context).primaryColor,
                       backgroundColor: Colors.grey.shade100,
                       padding: const EdgeInsets.symmetric(
@@ -216,7 +222,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
                           );
                     },
                     selectedColor:
-                        Theme.of(context).primaryColor.withValues(alpha: 0.2),
+                        Theme.of(context).primaryColor.withOpacity(0.2),
                     checkmarkColor: Theme.of(context).primaryColor,
                     backgroundColor: Colors.grey.shade100,
                     padding:

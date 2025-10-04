@@ -2,15 +2,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/models/order.dart';
 import '../../../core/services/order_service.dart';
+import '../../auth/providers/auth_provider.dart';
 
 // Orders List Provider
-final ordersProvider = FutureProvider<List<Order>>((ref) async {
+final ordersProvider = FutureProvider.autoDispose<List<Order>>((ref) async {
+  // Depend on auth state so orders reload/clear when user changes or logs out
+  final authState = ref.watch(authProvider);
+
+  if (!authState.isAuthenticated) {
+    // Throw to show auth prompt UI and clear any cached orders from previous user
+    throw Exception('Please log in');
+  }
+
   return await OrderService.getUserOrders();
 });
 
 // Order Detail Provider
 final orderDetailProvider =
-    FutureProvider.family<Order?, String>((ref, orderId) async {
+    FutureProvider.autoDispose.family<Order?, String>((ref, orderId) async {
+  // Also tie detail fetch to auth state to avoid leaking previous session data
+  final authState = ref.watch(authProvider);
+  if (!authState.isAuthenticated) {
+    throw Exception('Please log in');
+  }
   return await OrderService.getOrderById(orderId);
 });
 

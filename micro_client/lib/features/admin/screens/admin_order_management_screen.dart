@@ -67,7 +67,7 @@ class _AdminOrderManagementScreenState
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.1),
+            color: Colors.grey.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 4,
             offset: const Offset(0, 2),
@@ -145,7 +145,7 @@ class _AdminOrderManagementScreenState
           _selectedStatusFilter = selected ? status : null;
         });
       },
-      selectedColor: AppTheme.primaryColor.withValues(alpha: 0.2),
+      selectedColor: AppTheme.primaryColor.withOpacity(0.2),
       checkmarkColor: AppTheme.primaryColor,
     );
   }

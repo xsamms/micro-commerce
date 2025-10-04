@@ -61,7 +61,7 @@ class OrderListScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 32),
           ElevatedButton.icon(
-            onPressed: () => context.go('/main/products'),
+            onPressed: () => context.push('/products'),
             icon: const Icon(Icons.shopping_cart),
             label: const Text('Start Shopping'),
             style: ElevatedButton.styleFrom(
@@ -110,7 +110,7 @@ class OrderListScreen extends ConsumerWidget {
             children: [
               if (isAuthError) ...[
                 ElevatedButton.icon(
-                  onPressed: () => context.go('/auth/login'),
+                  onPressed: () => context.go('/login'),
                   icon: const Icon(Icons.login),
                   label: const Text('Login'),
                 ),

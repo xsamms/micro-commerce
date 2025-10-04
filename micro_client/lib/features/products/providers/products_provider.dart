@@ -32,14 +32,18 @@ class ProductsFilterState {
     double? minPrice,
     double? maxPrice,
     String? sortBy,
+    bool clearCategoryId = false,
+    bool clearSearch = false,
+    bool clearMinPrice = false,
+    bool clearMaxPrice = false,
   }) {
     return ProductsFilterState(
       page: page ?? this.page,
       limit: limit ?? this.limit,
-      categoryId: categoryId ?? this.categoryId,
-      search: search ?? this.search,
-      minPrice: minPrice ?? this.minPrice,
-      maxPrice: maxPrice ?? this.maxPrice,
+      categoryId: clearCategoryId ? null : (categoryId ?? this.categoryId),
+      search: clearSearch ? null : (search ?? this.search),
+      minPrice: clearMinPrice ? null : (minPrice ?? this.minPrice),
+      maxPrice: clearMaxPrice ? null : (maxPrice ?? this.maxPrice),
       sortBy: sortBy ?? this.sortBy,
     );
   }
@@ -61,6 +65,10 @@ class ProductsFilterNotifier extends StateNotifier<ProductsFilterState> {
     double? minPrice,
     double? maxPrice,
     String? sortBy,
+    bool clearCategoryId = false,
+    bool clearSearch = false,
+    bool clearMinPrice = false,
+    bool clearMaxPrice = false,
   }) {
     state = state.copyWith(
       page: page ?? 1, // Reset to page 1 when filters change
@@ -69,6 +77,10 @@ class ProductsFilterNotifier extends StateNotifier<ProductsFilterState> {
       minPrice: minPrice,
       maxPrice: maxPrice,
       sortBy: sortBy,
+      clearCategoryId: clearCategoryId,
+      clearSearch: clearSearch,
+      clearMinPrice: clearMinPrice,
+      clearMaxPrice: clearMaxPrice,
     );
   }
 
@@ -77,7 +89,14 @@ class ProductsFilterNotifier extends StateNotifier<ProductsFilterState> {
   }
 
   void resetFilters() {
-    state = const ProductsFilterState();
+    state = state.copyWith(
+      page: 1,
+      clearCategoryId: true,
+      clearSearch: true,
+      clearMinPrice: true,
+      clearMaxPrice: true,
+      sortBy: 'createdAt',
+    );
   }
 }
 

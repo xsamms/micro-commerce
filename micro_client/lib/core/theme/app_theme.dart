@@ -28,6 +28,14 @@ class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
+      textTheme: const TextTheme(
+        // Ensure button/label text uses consistent inherit=false for smooth lerps
+        labelLarge: TextStyle(
+          inherit: false,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
       colorScheme: const ColorScheme.light(
         primary: primaryColor,
         secondary: secondaryColor,
@@ -64,7 +72,9 @@ class AppTheme {
             borderRadius: BorderRadius.circular(8),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          // Ensure consistent TextStyle interpolation (inherit=false)
           textStyle: const TextStyle(
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
@@ -79,7 +89,9 @@ class AppTheme {
             borderRadius: BorderRadius.circular(8),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          // Match inherit to avoid lerp issues
           textStyle: const TextStyle(
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
@@ -92,7 +104,9 @@ class AppTheme {
             borderRadius: BorderRadius.circular(8),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          // Match inherit to avoid lerp issues
           textStyle: const TextStyle(
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
@@ -145,6 +159,13 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
+      textTheme: const TextTheme(
+        labelLarge: TextStyle(
+          inherit: false,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
       colorScheme: const ColorScheme.dark(
         primary: primaryLightColor,
         secondary: secondaryLightColor,
@@ -160,6 +181,52 @@ class AppTheme {
       scaffoldBackgroundColor: const Color(0xFF0F172A),
       cardColor: const Color(0xFF1E293B),
       dividerColor: const Color(0xFF334155),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primaryLightColor,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          textStyle: const TextStyle(
+            inherit: false,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: primaryLightColor,
+          side: BorderSide(color: Colors.white.withOpacity(0.12)),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          textStyle: const TextStyle(
+            inherit: false,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: primaryLightColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          textStyle: const TextStyle(
+            inherit: false,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
     );
   }
 }
